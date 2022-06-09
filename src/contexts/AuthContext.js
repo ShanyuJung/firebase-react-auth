@@ -16,6 +16,21 @@ export const AuthProvider = ({ children }) => {
     return auth.createUserWithEmailAndPassword(email, password);
   };
 
+  const login = (email, password) => {
+    //signInWithEmailAndPassword => firebase function
+    return auth.signInWithEmailAndPassword(email, password);
+  };
+
+  const logout = () => {
+    //signOut => firebase function
+    return auth.signOut();
+  };
+
+  const resetPassword = (email) => {
+    //sendPasswordResetEmail => firebase function
+    return auth.sendPasswordResetEmail(email);
+  };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setIsLoading(false);
@@ -24,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const value = { currentUser, signup };
+  const value = { currentUser, signup, login, logout, resetPassword };
   return (
     <AuthContext.Provider value={value}>
       {!isLoading && children}
