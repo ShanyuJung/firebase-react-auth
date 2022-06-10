@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdateProfile from "./components/UpdateProfile";
+import LoginRoute from "./components/LoginRoute";
 
 function App() {
   return (
@@ -18,8 +19,22 @@ function App() {
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <Router>
             <Routes>
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
+              <Route
+                path="/signup"
+                element={
+                  <LoginRoute>
+                    <Signup />
+                  </LoginRoute>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <LoginRoute>
+                    <Login />
+                  </LoginRoute>
+                }
+              />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route
                 path="/update-profile"
