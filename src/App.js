@@ -3,7 +3,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdateProfile from "./components/UpdateProfile";
@@ -17,7 +17,7 @@ function App() {
         style={{ minHeight: "100vh" }}
       >
         <div className="w-100" style={{ maxWidth: "400px" }}>
-          <Router>
+          <HashRouter>
             <Routes>
               <Route
                 path="/signup"
@@ -53,7 +53,7 @@ function App() {
                 }
               />
             </Routes>
-          </Router>
+          </HashRouter>
         </div>
       </Container>
     </AuthProvider>
