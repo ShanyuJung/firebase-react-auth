@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signOut,
   updatePassword,
   updateProfile,
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }) => {
 
   const resetPassword = (email) => {
     //sendPasswordResetEmail => firebase function
-    return auth.sendPasswordResetEmail(email);
+    return sendPasswordResetEmail(auth, email);
   };
 
   const updateUserPassword = async (password) => {
