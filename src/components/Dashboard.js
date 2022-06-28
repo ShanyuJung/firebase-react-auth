@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Button, Alert, Image, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -6,7 +6,8 @@ import userPlaceholder from "../assets/user.png";
 
 const Dashboard = () => {
   const [error, setError] = useState();
-  const { currentUser, logout } = useAuth();
+  const [userPhotoUrl, setUserPhotoUrl] = useState(null);
+  const { currentUser, logout, getUserPhoto } = useAuth();
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
@@ -18,6 +19,18 @@ const Dashboard = () => {
       setError("Failed to log out.");
     }
   };
+
+  useEffect(() => {
+    const promise = getUserPhoto();
+    promise
+      .then((url) => {
+        setUserPhotoUrl(url);
+      })
+      .catch((error) => {
+        console.log(error);
+        setUserPhotoUrl(null);
+      });
+  }, []);
 
   return (
     <>
@@ -31,9 +44,7 @@ const Dashboard = () => {
           >
             <Image
               className="h-100 w-auto"
-              src={
-                currentUser.photoURL ? currentUser.photoURL : userPlaceholder
-              }
+              src={userPhotoUrl ? userPhotoUrl : userPlaceholder}
             />
           </Container>
           <div className="w-100 text-center mb-3">

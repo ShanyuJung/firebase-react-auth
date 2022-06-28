@@ -8,6 +8,13 @@ import {
   updatePassword,
   updateProfile,
 } from "firebase/auth";
+import {
+  ref,
+  getStorage,
+  uploadBytes,
+  getDownloadURL,
+  list,
+} from "firebase/storage";
 import { auth } from "../firebase";
 
 const AuthContext = React.createContext();
@@ -56,6 +63,26 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const uploadUserPhoto = async (userPhoto) => {
+    if (!userPhoto) return;
+    const authUID = auth.currentUser.uid;
+    const storage = getStorage();
+    const imageRef = ref(storage, `users/${authUID}/userPhoto`);
+
+    return uploadBytes(imageRef, userPhoto);
+  };
+
+  const getUserPhoto = async () => {
+    const authUID = auth.currentUser.uid;
+    const storage = getStorage();
+    const imageRef = ref(storage, `users/${authUID}/userPhoto`);
+    const pathRef = ref(storage, `users/${authUID}`);
+    const hasPhoto = await list(pathRef, { maxResults: 1 });
+    if (hasPhoto.items.length === 0) return;
+
+    return getDownloadURL(imageRef);
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsLoading(false);
@@ -73,6 +100,8 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     updateUserPassword,
     updateUserProfile,
+    uploadUserPhoto,
+    getUserPhoto,
   };
   return (
     <AuthContext.Provider value={value}>

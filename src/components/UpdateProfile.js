@@ -5,13 +5,18 @@ import { useAuth } from "../contexts/AuthContext";
 
 const UpdateProfile = () => {
   const nicknameRef = useRef();
-  const photoURLRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { currentUser, updateUserPassword, updateUserProfile } = useAuth();
+  const {
+    currentUser,
+    updateUserPassword,
+    updateUserProfile,
+    uploadUserPhoto,
+  } = useAuth();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [imageUpload, setImageUpload] = useState(null);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -24,9 +29,7 @@ const UpdateProfile = () => {
     setError("");
     setMessage("");
 
-    promises.push(
-      updateUserProfile(nicknameRef.current.value, photoURLRef.current.value)
-    );
+    promises.push(updateUserProfile(nicknameRef.current.value));
 
     if (passwordRef.current.value) {
       promises.push(updateUserPassword(passwordRef.current.value));
@@ -38,6 +41,25 @@ const UpdateProfile = () => {
       })
       .catch((e) => {
         setError("Failed to update profile.");
+        console.log(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const uploadUserPhotoHandler = () => {
+    const promise = uploadUserPhoto(imageUpload);
+    setIsLoading(true);
+    setError("");
+    setMessage("");
+
+    promise
+      .then(() => {
+        setMessage("Photo uploaded.");
+      })
+      .catch((e) => {
+        setError("Failed to upload photo.");
         console.log(e);
       })
       .finally(() => {
@@ -62,13 +84,25 @@ const UpdateProfile = () => {
                 defaultValue={currentUser.displayName}
               />
             </Form.Group>
-            <Form.Group id="photoURL" className="mb-4">
-              <Form.Label>Photo URL</Form.Label>
-              <Form.Control
-                type="text"
-                ref={photoURLRef}
-                defaultValue={currentUser.photoURL}
-              />
+            <Form.Group id="photo" className="mb-4">
+              <Form.Label className="w-100">Upload Photo</Form.Label>
+              <div className="d-flex">
+                <Form.Control
+                  className="w-75"
+                  type="file"
+                  onChange={(event) => {
+                    setImageUpload(event.target.files[0]);
+                  }}
+                />
+                <Button
+                  className="w-25"
+                  type="button"
+                  onClick={uploadUserPhotoHandler}
+                  disabled={isLoading}
+                >
+                  Upload
+                </Button>
+              </div>
             </Form.Group>
             <Form.Group id="password" className="mb-4">
               <Form.Label>Password</Form.Label>
