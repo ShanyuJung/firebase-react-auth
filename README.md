@@ -11,7 +11,7 @@ In the project, you can signup you own account with email and password, and set 
 
 ### `Firebase Auth`
 
-Build this project with firebase V9 and use `context` to manage auth states and following firebase function.
+Build this project with Firebase V9 and use `context` to manage auth states and following firebase functions.
 
 - createUserWithEmailAndPassword
 - signInWithEmailAndPassword
@@ -21,7 +21,19 @@ Build this project with firebase V9 and use `context` to manage auth states and 
 - updatePassword
 - updateProfile
 
-User can `signup`,`login`,`logout`,`reset password by email` and `update user profile` by these firebase function.
+User can `signup`,`login`,`logout`,`reset password by email` and `update user profile` by these firebase functions.
+
+### `Firebase Storage`
+
+Use Firebase Storage following firebase functions to manage user photo.
+
+- ref
+- getStorage
+- uploadBytes
+- getDownloadURL
+- list
+
+User can `upload image as personal photo`, uploading image only be allowed while auth login.
 
 ### `PrivateRoute`
 

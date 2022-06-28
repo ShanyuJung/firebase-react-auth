@@ -90,6 +90,7 @@ const UpdateProfile = () => {
                 <Form.Control
                   className="w-75"
                   type="file"
+                  accept=".jpg,.jpeg,.png"
                   onChange={(event) => {
                     setImageUpload(event.target.files[0]);
                   }}
